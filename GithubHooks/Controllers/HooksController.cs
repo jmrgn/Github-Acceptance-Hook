@@ -47,7 +47,7 @@ namespace GithubHooks.Controllers
 
             if (commentEvent != null)
             {
-                if (checkComment(commentEvent.Comment.Body))
+                if (allowedUsers.Contains(commentEvent.Comment.User.Login) && checkComment(commentEvent.Comment.Body))
                 {
                     var branchName = getBranchNameFromComment(commentEvent.Comment.Body);
 
