@@ -39,9 +39,10 @@ namespace GithubHooks.Controllers
         [HttpPost]
         public IHttpActionResult ProcessHook(IssueCommentEvent commentEvent)
         {
-            var creds = new InMemoryCredentialStore(new Credentials(apiKey));
+            var credentials = new Credentials("derp", apiKey);
+            var creds = new InMemoryCredentialStore(credentials);
             var headerVal = new ProductHeaderValue("GitHooks");
-            var github = new GitHubClient(headerVal, creds);
+            var github = new GitHubClient(headerVal, creds, new Uri(baseUrl));
             var apiConnection = new ApiConnection(new Connection(headerVal, creds));
 
             var settings = new JsonSerializerSettings()
