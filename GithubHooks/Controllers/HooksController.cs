@@ -24,7 +24,7 @@ namespace GithubHooks.Controllers
         private static string owner = ConfigurationManager.RepositoryConfig.Owner;
         private static string repoName = ConfigurationManager.RepositoryConfig.RepoName;
 
-        private const string baseUrl = "https://api.github.com";
+        private const string baseUrl = "https://api.github.rackspace.com";
         private static string pullRequestBase = string.Format("{0}/repos/{1}/{2}/pulls", baseUrl, owner, repoName);
         private static string pullRequestMerge = pullRequestBase + "/{0}/merge";
         private static string deleteBranch = string.Format("{0}/repos/{1}/{2}/git/refs/heads", baseUrl, owner, repoName) + "/{0}";
