@@ -23,12 +23,16 @@ namespace GithubHooks.Controllers
         private static string apiKey = ConfigurationManager.ApiCredentialsConfig.Key;
         private static string owner = ConfigurationManager.RepositoryConfig.Owner;
         private static string repoName = ConfigurationManager.RepositoryConfig.RepoName;
-        private string[] allowedUsers = ConfigurationManager.AllowedMergersConfiguration.Mergers;
 
         private const string baseUrl = "https://api.github.com";
         private static string pullRequestBase = string.Format("{0}/repos/{1}/{2}/pulls", baseUrl, owner, repoName);
         private static string pullRequestMerge = pullRequestBase + "/{0}/merge";
         private static string deleteBranch = string.Format("{0}/repos/{1}/{2}/git/refs/heads", baseUrl, owner, repoName) + "/{0}";
+
+        private System.Diagnostics.EventLog appLog = new System.Diagnostics.EventLog
+        {
+            Source = "Zhenbot API"
+        } ;
 
 
         [Route("hook")]
@@ -87,6 +91,7 @@ namespace GithubHooks.Controllers
                         
                     }
                 }
+                appLog.WriteEntry(aggregateException.InnerException.Message);
 
                 var comment = new PostableComment()
                 {
@@ -109,6 +114,7 @@ namespace GithubHooks.Controllers
                 {
                     Body = string.Format("Zhenbot™ was unable to merge Pull Request #{0} for {1}. Sorry about that :person_frowning:. Exception: {2}.", pullReqNumber, branchName, e)
                 };
+                appLog.WriteEntry(e.Message);
 
                 var finalComment = github.Issue.Comment.Create(owner, repoName, issueNumber, JsonConvert.SerializeObject(comment, settings)).Result;
                 return BadRequest();
@@ -160,6 +166,7 @@ namespace GithubHooks.Controllers
                     Thread.Sleep(5000);
                     return MergePullRequest(pullReqNumber, apiConnection, settings, false);
                 }
+                appLog.WriteEntry(apiException.Message);
             }
 
             return new MergeResult()
