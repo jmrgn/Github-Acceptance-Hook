@@ -6,27 +6,12 @@
     /// </summary>
     public static class ConfigurationManager
     {
-        public static RepositoryConfiguration RepositoryConfig
-        {
-            get
-            {
-                return GetConfiguration<RepositoryConfiguration>("RepositoryConfiguration");
-            }
-        }
 
         public static ApiCredentialsConfiguration ApiCredentialsConfig
         {
             get
             {
                 return GetConfiguration<ApiCredentialsConfiguration>("ApiCredentialsConfiguration");
-            }
-        }
-
-        public static AllowedMergersConfiguration AllowedMergersConfiguration
-        {
-            get
-            {
-                return GetConfiguration<AllowedMergersConfiguration>("AllowedMergersConfiguration");
             }
         }
 

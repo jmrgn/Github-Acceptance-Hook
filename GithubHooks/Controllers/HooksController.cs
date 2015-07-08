@@ -21,26 +21,23 @@ namespace GithubHooks.Controllers
     public class HooksController : ApiController
     {
         private static string apiKey = ConfigurationManager.ApiCredentialsConfig.Key;
-        private static string owner = ConfigurationManager.RepositoryConfig.Owner;
-        private static string repoName = ConfigurationManager.RepositoryConfig.RepoName;
-
         private const string baseUrl = "https://github.rackspace.com/api/v3";
-        private static string pullRequestBase = string.Format("{0}/repos/{1}/{2}/pulls", baseUrl, owner, repoName);
-        private static string pullRequestMerge = pullRequestBase + "/{0}/merge";
-        private static string deleteBranch = string.Format("{0}/repos/{1}/{2}/git/refs/heads", baseUrl, owner, repoName) + "/{0}";
-
-        private System.Diagnostics.EventLog appLog = new System.Diagnostics.EventLog
-        {
-            Source = "Zhenbot API"
-        } ;
-
+        private string owner, repoName, pullRequestBase, pullRequestMerge, deleteBranch;
+        private static string fallDownRobot = @"![](https://cdn3.vox-cdn.com/thumbor/9Ke1QsWFXy7kfbKGW7Qt2CrorOo=/1600x0/filters:no_upscale()/cdn0.vox-cdn.com/uploads/chorus_asset/file/3769944/robotgif_2.0.gif)";
+        private static string robotCelebration = @"![](http://media.giphy.com/media/C9qVnOqGo3VyU/giphy.gif)";
 
         [Route("hook")]
         [HttpPost]
         public IHttpActionResult ProcessHook(IssueCommentEvent commentEvent)
         {
-            var credentials = new Credentials("derp", apiKey);
-            var creds = new InMemoryCredentialStore(credentials);
+            var urlParts = commentEvent.Comment.Url.LocalPath.Split('/');
+            owner = urlParts[4];
+            repoName = urlParts[5];
+            pullRequestBase = string.Format("{0}/repos/{1}/{2}/pulls", baseUrl, owner, repoName);
+            pullRequestMerge = pullRequestBase + "/{0}/merge";
+            deleteBranch = string.Format("{0}/repos/{1}/{2}/git/refs/heads", baseUrl, owner, repoName) + "/{0}";
+
+            var creds = new InMemoryCredentialStore(new Credentials("derp", apiKey));
             var headerVal = new ProductHeaderValue("GitHooks");
             var github = new GitHubClient(headerVal, creds, new Uri(baseUrl));
             var apiConnection = new ApiConnection(new Connection(headerVal, creds));
@@ -72,7 +69,7 @@ namespace GithubHooks.Controllers
                 Base = "master",
                 Head = branchName,
                 Title = string.Format("#{0} - {1}", issueNumber, issueTitle),
-                Body = "Pull Request Auto-Created by Zhenbot™"
+                Body = string.Format("{0} <br/>Pull Request Auto-Created by Zhenbot™", robotCelebration)
             };
 
             object pullReqNumber = null;
@@ -92,11 +89,10 @@ namespace GithubHooks.Controllers
                         
                     }
                 }
-                appLog.WriteEntry(aggregateException.InnerException.Message);
 
                 var comment = new PostableComment()
                 {
-                    Body = string.Format("Zhenbot™ was unable to create Pull Request for {0}. Sorry about that :person_frowning:. Exception: {1}", branchName, e)
+                    Body = string.Format("{0} <br/>Zhenbot™ was unable to create Pull Request for {1}. Sorry about that :person_frowning:. Exception: {2}", fallDownRobot, branchName, e)
                 };
 
                 var finalComment = github.Issue.Comment.Create(owner, repoName, issueNumber, JsonConvert.SerializeObject(comment, settings)).Result;
@@ -113,9 +109,8 @@ namespace GithubHooks.Controllers
             {
                 var comment = new PostableComment()
                 {
-                    Body = string.Format("Zhenbot™ was unable to merge Pull Request #{0} for {1}. Sorry about that :person_frowning:. Exception: {2}.", pullReqNumber, branchName, e)
+                    Body = string.Format("{0} <br/>Zhenbot™ was unable to merge Pull Request #{1} for {2}. Sorry about that :person_frowning:. Exception: {2}.", fallDownRobot, pullReqNumber, branchName, e)
                 };
-                appLog.WriteEntry(e.Message);
 
                 var finalComment = github.Issue.Comment.Create(owner, repoName, issueNumber, JsonConvert.SerializeObject(comment, settings)).Result;
                 return BadRequest();
@@ -136,7 +131,7 @@ namespace GithubHooks.Controllers
             {
                 var comment = new PostableComment()
                 {
-                    Body = string.Format("Zhenbot™ was unable to merge Pull Request #{0} for {1}. Sorry about that :person_frowning:.", pullReqNumber, branchName)
+                    Body = string.Format("{0} <br/>Zhenbot™ was unable to merge Pull Request #{1} for {2}. Sorry about that :person_frowning:.", fallDownRobot, pullReqNumber, branchName)
                 };
 
                 var finalComment = github.Issue.Comment.Create(owner, repoName, issueNumber, JsonConvert.SerializeObject(comment, settings)).Result;
@@ -167,7 +162,6 @@ namespace GithubHooks.Controllers
                     Thread.Sleep(5000);
                     return MergePullRequest(pullReqNumber, apiConnection, settings, false);
                 }
-                appLog.WriteEntry(apiException.Message);
             }
 
             return new MergeResult()
