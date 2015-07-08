@@ -21,8 +21,7 @@ namespace GithubHooks.Controllers
     public class HooksController : ApiController
     {
         private static string apiKey = ConfigurationManager.ApiCredentialsConfig.Key;
-        private const string baseUrl = "https://github.rackspace.com/api/v3";
-        private string owner, repoName, pullRequestBase, pullRequestMerge, deleteBranch;
+        private string baseUrl, owner, repoName, pullRequestBase, pullRequestMerge, deleteBranch;
         private static string fallDownRobot = @"![](https://cdn3.vox-cdn.com/thumbor/9Ke1QsWFXy7kfbKGW7Qt2CrorOo=/1600x0/filters:no_upscale()/cdn0.vox-cdn.com/uploads/chorus_asset/file/3769944/robotgif_2.0.gif)";
         private static string robotCelebration = @"![](http://media.giphy.com/media/C9qVnOqGo3VyU/giphy.gif)";
 
@@ -30,9 +29,13 @@ namespace GithubHooks.Controllers
         [HttpPost]
         public IHttpActionResult ProcessHook(IssueCommentEvent commentEvent)
         {
+            var index = Array.IndexOf(commentEvent.Comment.Url.LocalPath.Split('/'), "repos");
             var urlParts = commentEvent.Comment.Url.LocalPath.Split('/');
-            owner = urlParts[4];
-            repoName = urlParts[5];
+            var url = commentEvent.Comment.Url.AbsoluteUri;
+            var start = url.IndexOf("/repos", 0);
+            baseUrl = url.Substring(0, start);
+            owner = urlParts[index + 1];
+            repoName = urlParts[index + 2];
             pullRequestBase = string.Format("{0}/repos/{1}/{2}/pulls", baseUrl, owner, repoName);
             pullRequestMerge = pullRequestBase + "/{0}/merge";
             deleteBranch = string.Format("{0}/repos/{1}/{2}/git/refs/heads", baseUrl, owner, repoName) + "/{0}";
@@ -69,7 +72,7 @@ namespace GithubHooks.Controllers
                 Base = "master",
                 Head = branchName,
                 Title = string.Format("#{0} - {1}", issueNumber, issueTitle),
-                Body = string.Format("{0} <br/>Pull Request Auto-Created by Zhenbot™", robotCelebration)
+                Body = "Pull Request Auto-Created by Zhenbot™"
             };
 
             object pullReqNumber = null;
@@ -122,7 +125,7 @@ namespace GithubHooks.Controllers
 
                 var comment = new PostableComment()
                 {
-                    Body = string.Format("Pulled (#{0}) and deleted {1} :ok_woman:. Zhenbot™ signing off.", pullReqNumber, branchName)
+                    Body = string.Format("{0} <br/>Pulled (#{1}) and deleted {2} :ok_woman:. Zhenbot™ signing off.", robotCelebration, pullReqNumber, branchName)
                 };
 
                 var finalComment = github.Issue.Comment.Create(owner, repoName, issueNumber, JsonConvert.SerializeObject(comment, settings)).Result;
