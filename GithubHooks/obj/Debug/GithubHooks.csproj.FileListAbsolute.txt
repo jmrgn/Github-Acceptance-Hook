@@ -59,9 +59,6 @@ C:\Users\matt.brown\Documents\SVN Checkouts\test-hooks\GithubHooks\bin\System.Ne
 C:\Users\matt.brown\Documents\SVN Checkouts\test-hooks\GithubHooks\bin\System.Web.Http.xml
 C:\Users\matt.brown\Documents\SVN Checkouts\test-hooks\GithubHooks\bin\System.Web.Http.WebHost.xml
 C:\Users\matt.brown\Documents\SVN Checkouts\test-hooks\GithubHooks\obj\Debug\WebApplication1.pdb
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\WebApplication1.dll.config
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\WebApplication1.dll
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\WebApplication1.pdb
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\Newtonsoft.Json.dll
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\Octokit.dll
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\System.Net.Http.Formatting.dll
@@ -71,6 +68,10 @@ C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\Newtonsoft.Json.
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\System.Net.Http.Formatting.xml
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\System.Web.Http.xml
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\System.Web.Http.WebHost.xml
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\WebApplication1.dll
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\WebApplication1.pdb
-C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.csprojResolveAssemblyReference.cache
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\Octokit.pdb
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\Octokit.xml
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\GithubHooks.dll.config
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\GithubHooks.dll
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\GithubHooks.pdb
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.dll
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.pdb
