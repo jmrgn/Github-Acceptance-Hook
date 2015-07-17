@@ -75,3 +75,4 @@ C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\GithubHooks.dll
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\bin\GithubHooks.pdb
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.dll
 C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.pdb
+C:\Users\sara5767\Github\Github-Acceptance-Hook\GithubHooks\obj\Debug\GithubHooks.csprojResolveAssemblyReference.cache

@@ -11,7 +11,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApplication1</RootNamespace>
+    <RootNamespace>GithubHooks</RootNamespace>
     <AssemblyName>GithubHooks</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
@@ -79,10 +79,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\GithubUser.cs" />
     <Compile Include="Controllers\HooksController.cs" />
@@ -91,9 +96,6 @@
     <Compile Include="Models\Repository.cs" />
     <Compile Include="RobotFallDownException.cs" />
     <Compile Include="Models\Sender.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\Configuration\ApiCredentialsConfiguration.cs" />
     <Compile Include="Helpers\Configuration\ConfigurationManager.cs" />
     <Compile Include="Helpers\Configuration\ObjectConfigurationSection.cs" />

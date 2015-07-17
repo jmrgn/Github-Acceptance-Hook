@@ -7,9 +7,10 @@ using Newtonsoft.Json.Serialization;
 
 namespace GithubHooks
 {
-    public class WebApiApplication : HttpApplication
+    public class Global : HttpApplication
     {
-        protected void Application_Start()
+
+       protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             var formatters = GlobalConfiguration.Configuration.Formatters;
