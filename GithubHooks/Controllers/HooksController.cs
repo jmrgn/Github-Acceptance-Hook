@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using GithubHooks.Configuration;
 using GithubHooks.Models;
+using Newtonsoft.Json;
 using Octokit;
 using Octokit.Internal;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
@@ -51,20 +52,28 @@ namespace GithubHooks.Controllers
             return Ok();
         }
 
-        [Route("requestevent")]
+        [Route("pullrequest")]
         [HttpPost]
         public async Task<IHttpActionResult> ProcessPullRequestEvent(PullRequestEvent pullRequestEvent)
         {
-
+            if (CheckLabel(pullRequestEvent))
+            {
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"C:\temp\test.txt"))
+                {
+                    var json = JsonConvert.SerializeObject(pullRequestEvent);
+                    await file.WriteAsync(json);
+                }
+            }
             return Ok();
         }
 
         private static bool CheckLabel(PullRequestEvent requestEvent)
         {
-            if (requestEvent.Action != "labeled")
-            {
-                return false;
-            }
+            //if (requestEvent!= "labeled")
+            //{
+            //    return false;
+            //}
             
             return true;
         }
@@ -82,7 +91,7 @@ namespace GithubHooks.Controllers
             return comment.Split(split, StringSplitOptions.None)[1].Trim();
         }
 
-        private PullRequest GetPullRequest(string branchName, int issueNumber, string issueTitle)
+        private Octokit.PullRequest GetPullRequest(string branchName, int issueNumber, string issueTitle)
         {
             var existingPullRequest = FindRelatedPullRequest(branchName);
             if (existingPullRequest != null && !existingPullRequest.Merged)
@@ -106,7 +115,7 @@ namespace GithubHooks.Controllers
             }
         }
 
-        private PullRequestMerge MergePullRequest(PullRequest pullRequest, int issueNumber, string branchName, bool tryAgain)
+        private PullRequestMerge MergePullRequest(Octokit.PullRequest pullRequest, int issueNumber, string branchName, bool tryAgain)
         {
             var newMergePullRequest = new MergePullRequest { Message = "Merged " + pullRequest.Title };
 
@@ -141,7 +150,7 @@ namespace GithubHooks.Controllers
             var comment = _github.Issue.Comment.Create(_owner, _repoName, issueNumber, commentBody).Result;
         }
 
-        private PullRequest FindRelatedPullRequest(string branch)
+        private Octokit.PullRequest FindRelatedPullRequest(string branch)
         {
             var issues = _github.Issue.GetAllForRepository(_owner, _repoName).Result;
 

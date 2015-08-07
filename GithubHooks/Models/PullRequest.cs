@@ -5,6 +5,9 @@ using System.Web;
 
 namespace GithubHooks.Models
 {
+    /// <summary>
+    /// AUTO GENERATED
+    /// </summary>
     public class PullRequest
     {
         public string url { get; set; }
@@ -17,7 +20,7 @@ namespace GithubHooks.Models
         public string state { get; set; }
         public bool locked { get; set; }
         public string title { get; set; }
-        public User user { get; set; }
+        public GithubUser user { get; set; }
         public string body { get; set; }
         public string created_at { get; set; }
         public string updated_at { get; set; }
@@ -45,4 +48,75 @@ namespace GithubHooks.Models
         public int deletions { get; set; }
         public int changed_files { get; set; }
     }
+
+    public class Head
+    {
+        public string label { get; set; }
+        public string @ref { get; set; }
+        public string sha { get; set; }
+        public GithubUser user { get; set; }
+        public Repository repo { get; set; }
+    }
+
+    public class Base
+    {
+        public string label { get; set; }
+        public string @ref { get; set; }
+        public string sha { get; set; }
+        public GithubUser user { get; set; }
+        public Repository repo { get; set; }
+    }
+
+    public class Self
+    {
+        public string href { get; set; }
+    }
+
+    public class Html
+    {
+        public string href { get; set; }
+    }
+
+    public class IssueLink
+    {
+        public string href { get; set; }
+    }
+
+    public class CommentsLink
+    {
+        public string href { get; set; }
+    }
+
+    public class ReviewCommentsLink
+    {
+        public string href { get; set; }
+    }
+
+    public class ReviewCommentLink
+    {
+        public string href { get; set; }
+    }
+
+    public class CommitsLink
+    {
+        public string href { get; set; }
+    }
+
+    public class StatusesLink
+    {
+        public string href { get; set; }
+    }
+
+    public class Links
+    {
+        public Self self { get; set; }
+        public Html html { get; set; }
+        public IssueLink issue { get; set; }
+        public CommentsLink comments { get; set; }
+        public ReviewCommentsLink review_comments { get; set; }
+        public ReviewCommentLink review_comment { get; set; }
+        public CommitsLink commits { get; set; }
+        public StatusesLink statuses { get; set; }
+    }
+
 }
