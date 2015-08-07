@@ -51,6 +51,25 @@ namespace GithubHooks.Controllers
             return Ok();
         }
 
+        [Route("requestevent")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ProcessPullRequestEvent(PullRequestEvent pullRequestEvent)
+        {
+
+            return Ok();
+        }
+
+        private static bool CheckLabel(PullRequestEvent requestEvent)
+        {
+            if (requestEvent.Action != "labeled")
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+
         private static bool CheckComment(string comment)
         {
             return comment.Contains(":accept:");

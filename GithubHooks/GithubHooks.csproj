@@ -52,6 +52,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -88,11 +89,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Configuration\SlackConfiguration.cs" />
+    <Compile Include="Helpers\SlackClient.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\GithubUser.cs" />
     <Compile Include="Controllers\HooksController.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\IssueCommentEvent.cs" />
+    <Compile Include="Models\PullRequestEvent.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="RobotFallDownException.cs" />
     <Compile Include="Models\Sender.cs" />
@@ -106,6 +110,7 @@
     <Content Include="Configuration\ApiCredentials.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Configuration\SlackConfiguration.config" />
     <None Include="Properties\PublishProfiles\GithubHooks.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
