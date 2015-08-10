@@ -96,11 +96,10 @@
     <Compile Include="Controllers\HooksController.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\IssueCommentEvent.cs" />
-    <Compile Include="Models\PullRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\PullRequestEvent.cs" />
+    <Compile Include="Models\IssueEvent.cs" />
+    <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Repository.cs" />
+    <Compile Include="Models\SlackPayload.cs" />
     <Compile Include="RobotFallDownException.cs" />
     <Compile Include="Models\Sender.cs" />
     <Compile Include="Helpers\Configuration\ApiCredentialsConfiguration.cs" />

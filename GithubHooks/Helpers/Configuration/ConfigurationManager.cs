@@ -15,6 +15,15 @@
             }
         }
 
+        public static SlackConfiguration SlackConfiguration
+        {
+            get
+            {
+                return GetConfiguration<SlackConfiguration>("SlackConfiguration");
+            }
+        }
+
+
         private static TConfiguration GetConfiguration<TConfiguration>(string name)
             where TConfiguration : ObjectConfigurationSection
         {

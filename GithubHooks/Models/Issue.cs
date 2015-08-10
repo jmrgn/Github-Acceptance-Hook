@@ -15,7 +15,7 @@ namespace GithubHooks.Models
         public int Number { get; set; }
         public string Title { get; set; }
         public User User { get; set; }
-        public List<string> Labels { get; set; }
+        public List<Label> Labels { get; set; }
         public string State { get; set; }
         public bool Locked { get; set; }
         public string Assignee { get; set; }

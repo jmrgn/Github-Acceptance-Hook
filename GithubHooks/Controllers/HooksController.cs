@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using GithubHooks.Configuration;
+using GithubHooks.Helpers;
 using GithubHooks.Models;
 using Newtonsoft.Json;
 using Octokit;
@@ -14,7 +15,12 @@ namespace GithubHooks.Controllers
 {
     public class HooksController : ApiController
     {
+        private const string ReadyForReview = "Ready For Code Review";
+        private const string PassedCodeReview = "Passed Code Review";
+
         private static readonly string ApiKey = ConfigurationManager.ApiCredentialsConfig.Key;
+        private static readonly string SlackUrl = ConfigurationManager.SlackConfiguration.StatusWebhookUrl;
+
         private string _baseUrl, _owner, _repoName;
         private static readonly string FallDownRobot = @"![](https://cdn3.vox-cdn.com/thumbor/9Ke1QsWFXy7kfbKGW7Qt2CrorOo=/1600x0/filters:no_upscale()/cdn0.vox-cdn.com/uploads/chorus_asset/file/3769944/robotgif_2.0.gif)";
         private static readonly string RobotCelebration = @"![](http://media.giphy.com/media/C9qVnOqGo3VyU/giphy.gif)";
@@ -52,30 +58,46 @@ namespace GithubHooks.Controllers
             return Ok();
         }
 
-        [Route("pullrequest")]
+
+        [Route("issueevent")]
         [HttpPost]
-        public async Task<IHttpActionResult> ProcessPullRequestEvent(PullRequestEvent pullRequestEvent)
+        public async Task<IHttpActionResult> ProcessIssueEvent(Models.IssueEvent issueEvent)
         {
-            if (CheckLabel(pullRequestEvent))
+            try
             {
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"C:\temp\test.txt"))
+                if (CheckLabel(issueEvent))
                 {
-                    var json = JsonConvert.SerializeObject(pullRequestEvent);
-                    await file.WriteAsync(json);
+                    var client = new SlackClient(SlackUrl);
+                    var payload = new SlackPayload(issueEvent.issue.Title, issueEvent.issue.Url.AbsoluteUri);
+                    await client.ForwardGithubEvent(payload);
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
             }
             return Ok();
         }
 
-        private static bool CheckLabel(PullRequestEvent requestEvent)
+        private static bool CheckLabel(Models.IssueEvent issueEvent)
         {
-            //if (requestEvent!= "labeled")
-            //{
-            //    return false;
-            //}
+            if (issueEvent.action != "labeled")
+            {
+                return false;
+            }
+
+            if (issueEvent.issue.Labels != null && issueEvent.issue.Labels.Count > 0)
+            {
+                var ready = issueEvent.issue.Labels.Count(l => l.name == ReadyForReview);
+                var passed = issueEvent.issue.Labels.Count(l => l.name == PassedCodeReview);
+
+                if (ready > 0 && passed == 0)
+                {
+                    return true;
+                }
+            }
             
-            return true;
+            return false;
         }
 
 

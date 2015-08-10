@@ -17,11 +17,11 @@ namespace GithubHooks.Helpers
             this.uri = new Uri(url);
         }
 
-        public async Task ForwardGithubEvent(PullRequestEvent pullRequestEvent)
+        public async Task ForwardGithubEvent(SlackPayload payload)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.PostAsync(uri, new StringContent(JsonConvert.SerializeObject(pullRequestEvent), System.Text.Encoding.UTF8, "application/json"));
+                var response = await httpClient.PostAsync(uri, new StringContent(JsonConvert.SerializeObject(payload), System.Text.Encoding.UTF8, "application/json"));
                 response.EnsureSuccessStatusCode();
             }
         }
